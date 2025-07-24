@@ -83,8 +83,10 @@ document.body.innerHTML = `
       </div>
       <div class="key-row">
         ${"ZXCVBNM".split("").map(l => `<button class="key" onclick="addLetter('${l.toLowerCase()}')">${l}</button>`).join("")}
-        <button class="key control-key" onclick="deleteLastChar()">Delete</button>
-        <button class="key control-key" onclick="checkGuess()">Guess</button>
+      </div>
+      <div class="control-row">
+        <button class="control-key" onclick="deleteLastChar()">Delete</button>
+        <button class="control-key" onclick="checkGuess()">Guess</button>
       </div>
     </div>
     <div id="result"></div>
@@ -133,10 +135,11 @@ style.textContent = `
     gap: 5px;
     margin-bottom: 20px;
   }
-  .key-row {
+  .key-row, .control-row {
     display: flex;
     justify-content: center;
     gap: 5px;
+    flex-wrap: wrap;
   }
   .key {
     padding: 10px;
@@ -151,6 +154,12 @@ style.textContent = `
   .control-key {
     background: #39CCCC;
     font-weight: bold;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    min-width: 80px;
   }
   #result div {
     margin: 5px 0;
