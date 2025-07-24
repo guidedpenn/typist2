@@ -8,14 +8,18 @@ const maxAttempts = 6;
 let currentGuess = "";
 
 function updateDisplay() {
-  const inputBoxes = document.querySelectorAll(".letter-box");
-  inputBoxes.forEach((box, i) => {
+  const allRows = document.querySelectorAll(".guess-row");
+  const currentRow = allRows[attempts];
+  if (!currentRow) return;
+
+  const boxes = currentRow.querySelectorAll(".letter-box");
+  boxes.forEach((box, i) => {
     box.textContent = currentGuess[i] || "";
   });
 }
 
 function addLetter(letter) {
-  if (currentGuess.length < 6) {
+  if (currentGuess.length < 6 && attempts < maxAttempts) {
     currentGuess += letter;
     updateDisplay();
   }
@@ -32,29 +36,23 @@ function checkGuess() {
     return;
   }
 
-  const resultDiv = document.getElementById("result");
-  const feedback = document.createElement("div");
-
-  attempts++;
-  let result = "";
+  const currentRow = document.querySelectorAll(".guess-row")[attempts];
+  const boxes = currentRow.querySelectorAll(".letter-box");
 
   for (let i = 0; i < 6; i++) {
     if (currentGuess[i] === secretWord[i]) {
-      result += `<span class='green'>${currentGuess[i]}</span>`;
+      boxes[i].classList.add("green");
     } else if (secretWord.includes(currentGuess[i])) {
-      result += `<span class='yellow'>${currentGuess[i]}</span>`;
+      boxes[i].classList.add("yellow");
     } else {
-      result += `<span class='gray'>${currentGuess[i]}</span>`;
+      boxes[i].classList.add("gray");
     }
   }
-
-  feedback.innerHTML = result;
-  resultDiv.appendChild(feedback);
 
   if (currentGuess === secretWord) {
     alert("Congratulations! You guessed the word!");
     disableKeyboard();
-  } else if (attempts >= maxAttempts) {
+  } else if (++attempts >= maxAttempts) {
     alert(`Out of attempts! The word was: ${secretWord}`);
     disableKeyboard();
   }
@@ -72,7 +70,11 @@ document.body.innerHTML = `
   <div class="container">
     <h1>Mini Wordle</h1>
     <div id="play-area">
-      ${"_".repeat(6).split("").map(() => '<div class="letter-box"></div>').join("")}
+      ${Array.from({ length: 6 }).map(() => `
+        <div class="guess-row">
+          ${"_".repeat(6).split("").map(() => '<div class="letter-box"></div>').join("")}
+        </div>
+      `).join("")}
     </div>
     <div class="keyboard">
       <div class="key-row">
@@ -113,13 +115,18 @@ style.textContent = `
   }
   #play-area {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
+    gap: 8px;
+  }
+  .guess-row {
+    display: flex;
   }
   .letter-box {
     width: 50px;
     height: 50px;
-    margin: 5px;
+    margin: 3px;
     border: 2px solid #ccc;
     display: flex;
     justify-content: center;
@@ -161,38 +168,18 @@ style.textContent = `
     cursor: pointer;
     min-width: 80px;
   }
-  #result div {
-    margin: 5px 0;
-  }
   .green {
-    background: #6aaa64;
+    background: #6aaa64 !important;
     color: white;
-    padding: 5px;
-    margin: 2px;
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    border-radius: 4px;
   }
   .yellow {
-    background: #c9b458;
+    background: #c9b458 !important;
     color: white;
-    padding: 5px;
-    margin: 2px;
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    border-radius: 4px;
   }
   .gray {
-    background: #787c7e;
+    background: #787c7e !important;
     color: white;
-    padding: 5px;
-    margin: 2px;
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    border-radius: 4px;
   }
 `;
 document.head.appendChild(style);
+
