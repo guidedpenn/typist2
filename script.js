@@ -75,9 +75,17 @@ document.body.innerHTML = `
       ${"_".repeat(6).split("").map(() => '<div class="letter-box"></div>').join("")}
     </div>
     <div class="keyboard">
-      ${"QWERTYUIOPASDFGHJKLZXCVBNM".split("").map(l => `<button class="key" onclick="addLetter('${l.toLowerCase()}')">${l}</button>`).join("")}
-      <button onclick="checkGuess()">Guess</button>
-      <button onclick="deleteLastChar()">Delete</button>
+      <div class="key-row">
+        ${"QWERTYUIOP".split("").map(l => `<button class="key" onclick="addLetter('${l.toLowerCase()}')">${l}</button>`).join("")}
+      </div>
+      <div class="key-row">
+        ${"ASDFGHJKL".split("").map(l => `<button class="key" onclick="addLetter('${l.toLowerCase()}')">${l}</button>`).join("")}
+      </div>
+      <div class="key-row">
+        ${"ZXCVBNM".split("").map(l => `<button class="key" onclick="addLetter('${l.toLowerCase()}')">${l}</button>`).join("")}
+        <button class="key control-key" onclick="deleteLastChar()">Delete</button>
+        <button class="key control-key" onclick="checkGuess()">Guess</button>
+      </div>
     </div>
     <div id="result"></div>
   </div>
@@ -86,15 +94,96 @@ document.body.innerHTML = `
 // Basic styling
 const style = document.createElement('style');
 style.textContent = `
-  body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100vh; background: #001f3f; color: white; }
-  .container { text-align: center; padding: 20px; }
-  #play-area { display: flex; justify-content: center; margin-bottom: 20px; }
-  .letter-box { width: 40px; height: 40px; margin: 5px; border: 2px solid #ccc; display: flex; justify-content: center; align-items: center; font-size: 24px; background: white; color: black; border-radius: 5px; }
-  .keyboard { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; max-width: 400px; margin: 0 auto 20px; }
-  .key, .keyboard button { padding: 10px; font-size: 16px; border-radius: 5px; border: none; cursor: pointer; background: #0074D9; color: white; }
-  #result div { margin: 5px 0; }
-  .green { background: #6aaa64; color: white; padding: 5px; margin: 2px; display: inline-block; width: 20px; text-align: center; border-radius: 4px; }
-  .yellow { background: #c9b458; color: white; padding: 5px; margin: 2px; display: inline-block; width: 20px; text-align: center; border-radius: 4px; }
-  .gray { background: #787c7e; color: white; padding: 5px; margin: 2px; display: inline-block; width: 20px; text-align: center; border-radius: 4px; }
+  body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background: #001f3f;
+    color: white;
+    margin: 0;
+  }
+  .container {
+    text-align: center;
+    padding: 20px;
+  }
+  #play-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .letter-box {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    background: white;
+    color: black;
+    border-radius: 5px;
+  }
+  .keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  .key-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  .key {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background: #0074D9;
+    color: white;
+    min-width: 40px;
+  }
+  .control-key {
+    background: #39CCCC;
+    font-weight: bold;
+  }
+  #result div {
+    margin: 5px 0;
+  }
+  .green {
+    background: #6aaa64;
+    color: white;
+    padding: 5px;
+    margin: 2px;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .yellow {
+    background: #c9b458;
+    color: white;
+    padding: 5px;
+    margin: 2px;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .gray {
+    background: #787c7e;
+    color: white;
+    padding: 5px;
+    margin: 2px;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    border-radius: 4px;
+  }
 `;
 document.head.appendChild(style);
