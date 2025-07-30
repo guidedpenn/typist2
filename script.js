@@ -39,26 +39,32 @@ function checkGuess() {
   const currentRow = document.querySelectorAll(".guess-row")[attempts];
   const boxes = currentRow.querySelectorAll(".letter-box");
 
-  for (let i = 0; i < 6; i++) {
-    if (currentGuess[i] === secretWord[i]) {
-      boxes[i].classList.add("green");
-    } else if (secretWord.includes(currentGuess[i])) {
-      boxes[i].classList.add("yellow");
-    } else {
-      boxes[i].classList.add("gray");
+  boxes.forEach((box, i) => {
+    setTimeout(() => {
+      box.classList.add("flip");
+      setTimeout(() => {
+        if (currentGuess[i] === secretWord[i]) {
+          box.classList.add("green");
+        } else if (secretWord.includes(currentGuess[i])) {
+          box.classList.add("yellow");
+        } else {
+          box.classList.add("gray");
+        }
+      }, 150);
+    }, i * 300);
+  });
+
+  setTimeout(() => {
+    if (currentGuess === secretWord) {
+      alert("Congratulations! You guessed the word!");
+      disableKeyboard();
+    } else if (++attempts >= maxAttempts) {
+      alert(`Out of attempts! The word was: ${secretWord}`);
+      disableKeyboard();
     }
-  }
-
-  if (currentGuess === secretWord) {
-    alert("Congratulations! You guessed the word!");
-    disableKeyboard();
-  } else if (++attempts >= maxAttempts) {
-    alert(`Out of attempts! The word was: ${secretWord}`);
-    disableKeyboard();
-  }
-
-  currentGuess = "";
-  updateDisplay();
+    currentGuess = "";
+    updateDisplay();
+  }, 6 * 300);
 }
 
 function disableKeyboard() {
@@ -68,7 +74,7 @@ function disableKeyboard() {
 // HTML structure
 document.body.innerHTML = `
   <div class="container">
-    <h1>Mini Wordle</h1>
+    <img src='gdi_logo_pixelated.png' alt='Guided Discoveries Logo' class='logo'>
     <div id="play-area">
       ${Array.from({ length: 6 }).map(() => `
         <div class="guess-row">
@@ -135,6 +141,10 @@ style.textContent = `
     background: white;
     color: black;
     border-radius: 5px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .letter-box.flip {
+    transform: rotateX(90deg);
   }
   .keyboard {
     display: flex;
@@ -182,4 +192,16 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Add logo styling
+const logoStyle = document.createElement('style');
+logoStyle.textContent = `
+  .logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 128px;
+    height: auto;
+  }
+`;
+document.head.appendChild(logoStyle);
 
