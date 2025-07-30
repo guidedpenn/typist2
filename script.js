@@ -74,7 +74,13 @@ function disableKeyboard() {
 // HTML structure
 document.body.innerHTML = `
   <div class="container">
-    <img src='gdi_logo_pixelated.png' alt='Guided Discoveries Logo' class='logo'>
+    <div class="logo-bar">
+  <img src="/mnt/data/CSC.png" alt="Catalina Sea Camp" class="logo">
+  <img src="/mnt/data/240x120 astrologo.jpg" alt="AstroCamp" class="logo">
+  <img src="/mnt/data/GDI Logo.png" alt="Guided Discoveries" class="logo main-logo">
+  <img src="/mnt/data/camp chop logo.jpg" alt="Camp Chop" class="logo">
+  <img src="/mnt/data/CIMI logo.Hor.png" alt="CIMI" class="logo">
+</div>
     <div id="play-area">
       ${Array.from({ length: 6 }).map(() => `
         <div class="guess-row">
@@ -205,3 +211,25 @@ logoStyle.textContent = `
 `;
 document.head.appendChild(logoStyle);
 
+// Add multi-logo banner styling
+const brandStyle = document.createElement('style');
+brandStyle.textContent = `
+  .logo-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .logo-bar .logo {
+    height: 60px;
+    max-width: 160px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* white-out look */
+  }
+  .main-logo {
+    height: 80px;
+  }
+`;
+document.head.appendChild(brandStyle);
